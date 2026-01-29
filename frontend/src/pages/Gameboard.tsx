@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getGame } from '../api';
@@ -21,27 +21,50 @@ export default function GameBoard() {
   const navigate = useNavigate();
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
-  const [prevTeamRanks, setPrevTeamRanks] = useState<Record<number, number>>({});
   const [animatingTeams, setAnimatingTeams] = useState<Set<number>>(new Set());
+  const [showAnnouncement, setShowAnnouncement] = useState(false);
+  
+  // useRefで前回のランクを保持（再レンダリングを防ぐ）
+  const prevTeamRanksRef = useRef<Record<number, number>>({});
+  const isFirstLoad = useRef(true);
 
-  const loadGame = useCallback(async () => {
+  const loadGame = async () => {
     if (!gameId) return;
     try {
       const response = await getGame(parseInt(gameId));
       const newGame = response.data;
       
-      // 前回のランクと比較してアニメーション対象を決定
-      if (game) {
+      // 初回ロード以外で、前回のランクと比較
+      if (!isFirstLoad.current && Object.keys(prevTeamRanksRef.current).length > 0) {
         const newAnimating = new Set<number>();
         newGame.teams.forEach((team: any) => {
-          const prevRank = prevTeamRanks[team.id];
+          const prevRank = prevTeamRanksRef.current[team.id];
           if (prevRank !== undefined && prevRank < team.rank) {
             newAnimating.add(team.id);
           }
         });
+        
+        // ランクダウンするチームがいる場合、結果発表を表示
         if (newAnimating.size > 0) {
-          setAnimatingTeams(newAnimating);
-          setTimeout(() => setAnimatingTeams(new Set()), 2000);
+          setShowAnnouncement(true);
+          
+          // 2.5秒後に結果発表を消してアニメーション開始
+          setTimeout(() => {
+            setShowAnnouncement(false);
+            setGame(newGame);
+            setAnimatingTeams(newAnimating);
+            
+            // 現在のランクを保存
+            const rankMap: Record<number, number> = {};
+            newGame.teams.forEach((team: any) => {
+              rankMap[team.id] = team.rank;
+            });
+            prevTeamRanksRef.current = rankMap;
+            
+            // アニメーション終了
+            setTimeout(() => setAnimatingTeams(new Set()), 2000);
+          }, 2500);
+          return;
         }
       }
       
@@ -50,7 +73,8 @@ export default function GameBoard() {
       newGame.teams.forEach((team: any) => {
         rankMap[team.id] = team.rank;
       });
-      setPrevTeamRanks(rankMap);
+      prevTeamRanksRef.current = rankMap;
+      isFirstLoad.current = false;
       
       setGame(newGame);
     } catch (error) {
@@ -58,19 +82,13 @@ export default function GameBoard() {
     } finally {
       setLoading(false);
     }
-  }, [gameId, game, prevTeamRanks]);
+  };
 
   useEffect(() => {
     loadGame();
     // 5秒ごとに自動更新
     const interval = setInterval(loadGame, 5000);
     return () => clearInterval(interval);
-  }, []);
-
-  // gameIdが変わったときのみ即座にロード
-  useEffect(() => {
-    setLoading(true);
-    loadGame();
   }, [gameId]);
 
   if (loading && !game) {
@@ -93,6 +111,34 @@ export default function GameBoard() {
 
   return (
     <div className="page-container board-page">
+      {/* 結果発表オーバーレイ */}
+      <AnimatePresence>
+        {showAnnouncement && (
+          <motion.div
+            className="announcement-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="announcement-bubble"
+              initial={{ scale: 0, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ 
+                type: 'spring', 
+                stiffness: 200, 
+                damping: 15,
+                duration: 0.5 
+              }}
+            >
+              <span className="announcement-text">結果発表ーーー！</span>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="board-header">
         <button className="btn btn-dark" onClick={() => navigate(`/game/${gameId}/setup`)}>
           ← 設定

@@ -130,6 +130,72 @@
   }
 }
 
+/* 結果発表オーバーレイ */
+.announcement-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.announcement-bubble {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  border: 8px solid #1a1a1a;
+  border-radius: 30px;
+  padding: 40px 60px;
+  position: relative;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.announcement-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 20px solid transparent;
+  border-top-color: #1a1a1a;
+}
+
+.announcement-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 15px solid transparent;
+  border-top-color: #f0f0f0;
+  z-index: 1;
+}
+
+.announcement-text {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: #1a1a1a;
+  text-shadow: 2px 2px 0 rgba(201, 162, 39, 0.3);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .announcement-bubble {
+    padding: 25px 35px;
+    border-width: 5px;
+  }
+  
+  .announcement-text {
+    font-size: 28px;
+  }
+}
+
 .board-legend {
   display: flex;
   align-items: center;

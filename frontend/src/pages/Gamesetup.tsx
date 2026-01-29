@@ -161,7 +161,10 @@ export default function GameSetup() {
             </div>
 
             <div className="team-list">
-              {game.teams.map((team, index) => (
+              {game.teams
+                .slice()
+                .sort((a, b) => a.id - b.id)
+                .map((team, index) => (
                 <div key={team.id} className="team-item">
                   <span className="team-number">{index + 1}</span>
                   {editingTeam === team.id ? (

@@ -14,7 +14,7 @@ const RANKS_CONFIG = [
   { id: 5, name: '映す価値なし', color: '#ffffff', bgColor: '#1a1a1a', textColor: '#ffffff' },
 ];
 
-const ROW_HEIGHT = 52;
+const ROW_HEIGHT = 70;
 
 export default function GameBoard() {
   const { gameId } = useParams<{ gameId: string }>();
@@ -89,7 +89,7 @@ export default function GameBoard() {
     );
   }
 
-  const maxRows = Math.max(8, game.teams.length);
+  const maxRows = Math.max(10, game.teams.length);
 
   return (
     <div className="page-container board-page">
@@ -134,11 +134,14 @@ export default function GameBoard() {
 
             {/* チーム表示 */}
             <AnimatePresence>
-              {game.teams.map((team, index) => {
+              {game.teams
+                .slice() // 元の配列を変更しないようにコピー
+                .sort((a, b) => a.id - b.id) // IDで常に同じ順番にソート
+                .map((team, index) => {
                 const isAnimating = animatingTeams.has(team.id);
                 const xPosition = team.rank * (100 / 6);
-                // チームの配列インデックスで行位置を固定（row_positionが重複している場合の対策）
-                const yPosition = index * ROW_HEIGHT;
+                // IDでソートした順番で行位置を固定
+                const yPosition = index * ROW_HEIGHT + 12;
 
                 return (
                   <motion.div
@@ -146,8 +149,8 @@ export default function GameBoard() {
                     className={`team-badge ${isAnimating ? 'animating' : ''}`}
                     initial={false}
                     animate={{
-                      left: `calc(${xPosition}% + 5px)`,
-                      top: yPosition + 5,
+                      left: `calc(${xPosition}% + 8px)`,
+                      top: yPosition,
                     }}
                     transition={{
                       type: 'spring',

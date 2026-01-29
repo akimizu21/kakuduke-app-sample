@@ -211,7 +211,10 @@ export default function QuestionPlay() {
           <div className="gold-frame-inner answers-inner">
             <h3>チームの回答</h3>
             <div className="team-answers">
-              {game.teams.map((team) => {
+              {game.teams
+                .slice()
+                .sort((a, b) => a.id - b.id)
+                .map((team) => {
                 const result = judgeResults?.find((r) => r.team_id === team.id);
                 return (
                   <div key={team.id} className="team-answer-row">

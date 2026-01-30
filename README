@@ -68,9 +68,16 @@ pip install -r requirements.txt
 
 ```
 DATABASE_URL=postgresql://postgres:あなたのパスワード@localhost/kakuzuke
+SECRET_KEY=dev-secret-key-for-local
 ```
 
 ※ `あなたのパスワード` はPostgreSQLのパスワードに置き換えてください
+※ 本番環境では `SECRET_KEY` をランダムな長い文字列に変更してください
+
+**SECRET_KEYの生成方法（本番用）：**
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
 
 #### `app.py` の修正
 
@@ -242,7 +249,12 @@ git push -u origin main
 | Runtime | Python 3 |
 | Build Command | `pip install -r requirements.txt` |
 | Start Command | `gunicorn app:app` |
-| 環境変数 DATABASE_URL | (Neonの接続文字列) |
+
+**環境変数：**
+| Key | Value |
+|-----|-------|
+| DATABASE_URL | (Neonの接続文字列) |
+| SECRET_KEY | (ランダムな文字列を生成して設定) |
 
 ### 4. Render でフロントエンドをデプロイ
 

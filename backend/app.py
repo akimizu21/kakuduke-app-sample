@@ -10,6 +10,9 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+# Secret key for session management
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+
 # Database configuration
 DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://localhost/kakuzuke')
 if DATABASE_URL.startswith("postgres://"):

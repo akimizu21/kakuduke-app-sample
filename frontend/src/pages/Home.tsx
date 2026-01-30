@@ -96,7 +96,7 @@ export default function Home() {
                     <div className="main-actions">
                       <button
                         className="btn btn-primary-action"
-                        onClick={() => navigate(`/game/${game.id}/board`)}
+                        onClick={() => window.open(`/game/${game.id}/board`, '_blank')}
                       >
                         <Monitor size={20} />
                         ランキング表示
@@ -109,21 +109,20 @@ export default function Home() {
                         回答記入
                       </button>
                     </div>
-                    {/* 管理用アイコンボタン */}
+                    {/* 管理用ボタン */}
                     <div className="sub-actions">
                       <button
-                        className="btn btn-icon"
+                        className="btn btn-settings"
                         onClick={() => navigate(`/game/${game.id}/setup`)}
-                        title="設定"
                       >
-                        <Settings size={20} />
+                        <Settings size={18} />
                       </button>
                       <button
                         className="btn btn-icon btn-icon-danger"
                         onClick={() => handleDeleteGame(game.id)}
                         title="削除"
                       >
-                        <Trash2 size={20} />
+                        <Trash2 size={18} />
                       </button>
                     </div>
                   </div>

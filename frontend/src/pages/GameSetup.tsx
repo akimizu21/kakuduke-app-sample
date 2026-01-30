@@ -134,7 +134,7 @@ export default function GameSetup() {
         </button>
         <h1 className="title-jp">{game.name} - 設定</h1>
         <div className="header-actions">
-          <button className="btn btn-primary-action" onClick={() => navigate(`/game/${gameId}/board`)}>
+          <button className="btn btn-primary-action" onClick={() => window.open(`/game/${gameId}/board`, '_blank')}>
             <Monitor size={18} />
             ランキング表示
           </button>

@@ -162,7 +162,7 @@ export default function QuestionPlay() {
           <Home size={20} />
         </button>
         <h1 className="title-jp play-title">{game.name}</h1>
-        <button className="btn btn-primary-action" onClick={() => navigate(`/game/${gameId}/board`)}>
+        <button className="btn btn-primary-action" onClick={() => window.open(`/game/${gameId}/board`, '_blank')}>
           <Monitor size={18} />
           ランキング表示
         </button>
@@ -292,7 +292,7 @@ export default function QuestionPlay() {
                 )}
                 <button
                   className="btn btn-primary-action"
-                  onClick={() => navigate(`/game/${gameId}/board`)}
+                  onClick={() => window.open(`/game/${gameId}/board`, '_blank')}
                 >
                   <Monitor size={18} />
                   ランキング表示

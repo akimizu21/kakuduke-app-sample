@@ -1,0 +1,261 @@
+# 格付けチェック風アプリ
+
+テレビ番組「芸能人格付けチェック」風のクイズアプリです。
+
+## 機能
+
+- チームの作成・管理
+- 最大6問までの問題作成
+- 回答入力と正誤判定
+- 「結果発表ーーー！」の演出
+- ランクダウン時のスライドアニメーション
+- リアルタイム更新のボード表示
+
+## 技術スタック
+
+- **フロントエンド**: React + TypeScript + Vite
+- **バックエンド**: Python Flask
+- **データベース**: PostgreSQL
+
+---
+
+## ローカル実行手順
+
+### 前提条件
+
+- Node.js (v18以上推奨)
+- Python (v3.10以上推奨)
+- PostgreSQL
+
+### 1. PostgreSQLでデータベースを作成
+
+```bash
+# PostgreSQLに接続（Windowsの場合は -h localhost を追加）
+psql -U postgres -h localhost
+
+# データベース作成
+CREATE DATABASE kakuzuke;
+
+# 終了
+\q
+```
+
+### 2. バックエンドのセットアップ
+
+```bash
+# backendフォルダに移動
+cd backend
+
+# 仮想環境を作成
+python -m venv venv
+
+# 仮想環境を有効化
+# Windows (PowerShell)
+.\venv\Scripts\Activate.ps1
+# Windows (コマンドプロンプト)
+.\venv\Scripts\activate.bat
+# Mac/Linux
+source venv/bin/activate
+
+# 依存関係をインストール
+pip install -r requirements.txt
+
+# .envファイルを作成（backendフォルダ内）
+# 以下の内容で作成してください
+```
+
+#### `.env` ファイルの内容
+
+```
+DATABASE_URL=postgresql://postgres:あなたのパスワード@localhost/kakuzuke
+```
+
+※ `あなたのパスワード` はPostgreSQLのパスワードに置き換えてください
+
+#### `app.py` の修正
+
+`app.py` の先頭に以下を追加：
+
+```python
+from dotenv import load_dotenv
+load_dotenv()
+```
+
+#### バックエンドを起動
+
+```bash
+python app.py
+```
+
+成功すると以下が表示されます：
+```
+ * Running on http://127.0.0.1:5000
+```
+
+### 3. フロントエンドのセットアップ
+
+**新しいターミナルを開いて**以下を実行：
+
+```bash
+# frontendフォルダに移動
+cd frontend
+
+# 依存関係をインストール
+npm install
+
+# 開発サーバーを起動
+npm run dev
+```
+
+成功すると以下が表示されます：
+```
+  VITE v7.x.x  ready in xxx ms
+
+  ➜  Local:   http://localhost:5173/
+```
+
+### 4. アプリにアクセス
+
+ブラウザで以下を開きます：
+
+- **フロントエンド**: http://localhost:5173
+- **バックエンドAPI確認**: http://localhost:5000/api/health
+
+---
+
+## 使い方
+
+### 1. ゲームを作成
+
+1. ホーム画面で「ゲーム名」を入力
+2. 「作成」ボタンをクリック
+
+### 2. チームと問題を設定
+
+1. 「設定」画面でチーム名を入力して「追加」
+2. 問題タイトル、選択肢（A,B,Cなど）、正解を設定して「問題を追加」
+
+### 3. ゲームをプレイ
+
+1. 「プレイ」画面で各チームの回答を選択
+2. 「正誤判定」ボタンをクリック
+3. 正解/不正解が表示される
+
+### 4. ボード画面で結果を表示
+
+1. 「ボード表示」画面を開く（モニターに映す用）
+2. 5秒ごとに自動更新
+3. ランクダウンがあると「結果発表ーーー！」演出後にチームがスライド
+
+### 格付けランク
+
+| ランク | 不正解回数 |
+|--------|-----------|
+| 一流芸能人 | 0回（初期） |
+| 普通芸能人 | 1回 |
+| 二流芸能人 | 2回 |
+| 三流芸能人 | 3回 |
+| そっくりさん | 4回 |
+| 映す価値なし | 5回（最低） |
+
+---
+
+## フォルダ構成
+
+```
+kakuzuke-app/
+├── backend/
+│   ├── app.py              # Flask API
+│   ├── requirements.txt    # Python依存関係
+│   ├── .env               # 環境変数（自分で作成）
+│   └── build.sh           # Render用ビルドスクリプト
+│
+└── frontend/
+    ├── src/
+    │   ├── App.tsx        # ルーティング
+    │   ├── App.css        # グローバルスタイル
+    │   ├── api.ts         # API通信
+    │   └── pages/
+    │       ├── Home.tsx/css       # ホーム画面
+    │       ├── GameSetup.tsx/css  # 設定画面
+    │       ├── GameBoard.tsx/css  # ボード表示
+    │       └── QuestionPlay.tsx/css # プレイ画面
+    ├── package.json
+    ├── .env.development    # 開発用環境変数
+    └── vite.config.ts
+```
+
+---
+
+## トラブルシューティング
+
+### データベース接続エラー
+
+```
+connection to server at "localhost" failed: FATAL: password authentication failed
+```
+
+→ `.env` ファイルのパスワードが正しいか確認
+
+### データベースが存在しない
+
+```
+FATAL: database "kakuzuke" does not exist
+```
+
+→ PostgreSQLで `CREATE DATABASE kakuzuke;` を実行
+
+### CORSエラー
+
+→ バックエンドが起動しているか確認（http://localhost:5000/api/health）
+
+### フロントエンドからAPIに接続できない
+
+→ `.env.development` に `VITE_API_URL=http://localhost:5000/api` があるか確認
+
+---
+
+## Render + Neon へのデプロイ
+
+### 1. Neon でデータベースを作成
+
+1. [Neon](https://neon.tech/) でアカウント作成
+2. 新規プロジェクト作成
+3. 接続文字列をコピー
+
+### 2. GitHubにプッシュ
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/YOUR_USERNAME/kakuzuke-app.git
+git push -u origin main
+```
+
+### 3. Render でバックエンドをデプロイ
+
+| 項目 | 値 |
+|------|-----|
+| Name | kakuzuke-api |
+| Root Directory | backend |
+| Runtime | Python 3 |
+| Build Command | `pip install -r requirements.txt` |
+| Start Command | `gunicorn app:app` |
+| 環境変数 DATABASE_URL | (Neonの接続文字列) |
+
+### 4. Render でフロントエンドをデプロイ
+
+| 項目 | 値 |
+|------|-----|
+| Name | kakuzuke-app |
+| Root Directory | frontend |
+| Build Command | `npm install && npm run build` |
+| Publish Directory | dist |
+| 環境変数 VITE_API_URL | https://kakuzuke-api.onrender.com/api |
+
+---
+
+## ライセンス
+
+MIT

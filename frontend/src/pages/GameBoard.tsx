@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Home, Edit3 } from 'lucide-react';
 import { getGame } from '../api';
 import type { Game } from '../api';
 import './GameBoard.css';
@@ -140,12 +141,13 @@ export default function GameBoard() {
       </AnimatePresence>
 
       <div className="board-header">
-        <button className="btn btn-dark" onClick={() => navigate(`/game/${gameId}/setup`)}>
-          ← 設定
+        <button className="btn btn-icon" onClick={() => navigate('/')} title="ホームに戻る">
+          <Home size={20} />
         </button>
         <h1 className="title-jp board-title">{game.name}</h1>
-        <button className="btn btn-gold" onClick={() => navigate(`/game/${gameId}/play`)}>
-          プレイ画面
+        <button className="btn btn-primary-action" onClick={() => navigate(`/game/${gameId}/play`)}>
+          <Edit3 size={18} />
+          回答記入
         </button>
       </div>
 

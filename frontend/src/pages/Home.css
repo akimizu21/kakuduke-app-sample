@@ -88,13 +88,76 @@
 
 .game-actions {
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  align-items: center;
   flex-wrap: wrap;
 }
 
-.game-actions .btn {
-  padding: 8px 16px;
-  font-size: 14px;
+.main-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.sub-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 10px;
+  padding-left: 15px;
+  border-left: 2px solid rgba(201, 162, 39, 0.3);
+}
+
+/* 本番用メインボタン */
+.btn-primary-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Sans JP', sans-serif;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+}
+
+.btn-primary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+}
+
+/* アイコンボタン */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 2px solid var(--gold-main);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: var(--gold-main);
+  color: var(--black);
+}
+
+.btn-icon-danger {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+.btn-icon-danger:hover {
+  background: #c0392b;
+  color: white;
 }
 
 .loading {

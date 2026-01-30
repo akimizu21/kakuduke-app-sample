@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Home, Monitor } from 'lucide-react';
 import {
   getGame,
   getAnswers,
@@ -157,12 +158,13 @@ export default function QuestionPlay() {
   return (
     <div className="page-container play-page">
       <div className="play-header">
-        <button className="btn btn-dark" onClick={() => navigate(`/game/${gameId}/setup`)}>
-          ← 設定
+        <button className="btn btn-icon" onClick={() => navigate('/')} title="ホームに戻る">
+          <Home size={20} />
         </button>
         <h1 className="title-jp play-title">{game.name}</h1>
-        <button className="btn btn-gold" onClick={() => navigate(`/game/${gameId}/board`)}>
-          ボード表示
+        <button className="btn btn-primary-action" onClick={() => navigate(`/game/${gameId}/board`)}>
+          <Monitor size={18} />
+          ランキング表示
         </button>
       </div>
 
@@ -275,7 +277,7 @@ export default function QuestionPlay() {
             ) : (
               <div className="after-judge-actions">
                 <button
-                  className="btn btn-gold"
+                  className="btn btn-dark"
                   onClick={() => {
                     setShowResults(false);
                     setJudgeResults(null);
@@ -289,10 +291,11 @@ export default function QuestionPlay() {
                   </button>
                 )}
                 <button
-                  className="btn btn-dark"
+                  className="btn btn-primary-action"
                   onClick={() => navigate(`/game/${gameId}/board`)}
                 >
-                  ボードを確認
+                  <Monitor size={18} />
+                  ランキング表示
                 </button>
               </div>
             )}

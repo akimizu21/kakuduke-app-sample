@@ -108,6 +108,82 @@ body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
+.btn-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 本番用メインボタン（共通） */
+.btn-primary-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Sans JP', sans-serif;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+}
+
+.btn-primary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+}
+
+/* アイコンボタン（共通） */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid var(--gold-main);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--gold-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: var(--gold-main);
+  color: var(--black);
+}
+
+/* 戻るボタン */
+.btn-back {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Sans JP', sans-serif;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--gold-main);
+  border: 1px solid var(--gold-main);
+}
+
+.btn-back:hover {
+  background: rgba(201, 162, 39, 0.2);
+}
+
+/* ヘッダーアクション（右側のボタングループ） */
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 /* 入力フィールド */
 input, select {
   padding: 12px 16px;

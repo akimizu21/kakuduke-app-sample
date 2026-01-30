@@ -263,8 +263,8 @@ def submit_answer(question_id):
     answer = Answer.query.filter_by(team_id=team_id, question_id=question_id).first()
     if answer:
         answer.answer = answer_value
-        answer.is_correct = None
-        answer.judged_at = None
+        # is_correctはリセットしない（judge時に前回の判定結果として使用するため）
+        # judged_atもリセットしない
     else:
         answer = Answer(
             team_id=team_id,
@@ -288,13 +288,27 @@ def judge_answers(question_id):
     
     for answer in answers:
         is_correct = answer.answer == question.correct_answer
+        previous_is_correct = answer.is_correct  # 前回の判定結果を保存
+        
         answer.is_correct = is_correct
         answer.judged_at = datetime.utcnow()
         
         team = Team.query.get(answer.team_id)
         rank_changed = False
+        
+        # ランクダウンの条件：
+        # 1. 今回不正解
+        # 2. 前回未判定(None)または前回正解だった場合のみランクダウン
+        #    （前回も不正解だった場合は既にランクダウン済みなのでスキップ）
         if not is_correct and team.rank < 5:
-            team.rank += 1
+            if previous_is_correct is None or previous_is_correct == True:
+                team.rank += 1
+                rank_changed = True
+        
+        # ランクアップの条件（回答修正で正解になった場合）：
+        # 前回不正解で今回正解になった場合、ランクを戻す
+        if is_correct and previous_is_correct == False and team.rank > 0:
+            team.rank -= 1
             rank_changed = True
         
         results.append({

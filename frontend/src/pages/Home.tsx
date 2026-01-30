@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Settings, Trash2, Monitor, Edit3 } from 'lucide-react';
 import { getGames, createGame, deleteGame } from '../api';
 import './Home.css';
 
@@ -91,30 +92,40 @@ export default function Home() {
                     <p>チーム: {game.team_count} / 問題: {game.question_count}</p>
                   </div>
                   <div className="game-actions">
-                    <button
-                      className="btn btn-gold"
-                      onClick={() => navigate(`/game/${game.id}/setup`)}
-                    >
-                      設定
-                    </button>
-                    <button
-                      className="btn btn-dark"
-                      onClick={() => navigate(`/game/${game.id}/board`)}
-                    >
-                      ボード表示
-                    </button>
-                    <button
-                      className="btn btn-gold"
-                      onClick={() => navigate(`/game/${game.id}/play`)}
-                    >
-                      プレイ
-                    </button>
-                    <button
-                      className="btn btn-red"
-                      onClick={() => handleDeleteGame(game.id)}
-                    >
-                      削除
-                    </button>
+                    {/* 本番用メインボタン */}
+                    <div className="main-actions">
+                      <button
+                        className="btn btn-primary-action"
+                        onClick={() => navigate(`/game/${game.id}/board`)}
+                      >
+                        <Monitor size={20} />
+                        ランキング表示
+                      </button>
+                      <button
+                        className="btn btn-primary-action"
+                        onClick={() => navigate(`/game/${game.id}/play`)}
+                      >
+                        <Edit3 size={20} />
+                        回答記入
+                      </button>
+                    </div>
+                    {/* 管理用アイコンボタン */}
+                    <div className="sub-actions">
+                      <button
+                        className="btn btn-icon"
+                        onClick={() => navigate(`/game/${game.id}/setup`)}
+                        title="設定"
+                      >
+                        <Settings size={20} />
+                      </button>
+                      <button
+                        className="btn btn-icon btn-icon-danger"
+                        onClick={() => handleDeleteGame(game.id)}
+                        title="削除"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

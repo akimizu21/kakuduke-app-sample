@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Monitor, Edit3 } from 'lucide-react';
 import {
   getGame,
   createTeam,
@@ -127,16 +128,19 @@ export default function GameSetup() {
   return (
     <div className="page-container setup-page">
       <div className="setup-header">
-        <button className="btn btn-dark" onClick={() => navigate('/')}>
-          ← 戻る
+        <button className="btn btn-dark btn-with-icon" onClick={() => navigate('/')}>
+          <ArrowLeft size={18} />
+          戻る
         </button>
         <h1 className="title-jp">{game.name} - 設定</h1>
         <div className="header-actions">
-          <button className="btn btn-gold" onClick={() => navigate(`/game/${gameId}/board`)}>
-            ボード表示
+          <button className="btn btn-primary-action" onClick={() => navigate(`/game/${gameId}/board`)}>
+            <Monitor size={18} />
+            ランキング表示
           </button>
-          <button className="btn btn-gold" onClick={() => navigate(`/game/${gameId}/play`)}>
-            プレイ開始
+          <button className="btn btn-primary-action" onClick={() => navigate(`/game/${gameId}/play`)}>
+            <Edit3 size={18} />
+            回答記入
           </button>
         </div>
       </div>

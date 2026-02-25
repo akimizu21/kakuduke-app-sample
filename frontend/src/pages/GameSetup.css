@@ -203,3 +203,43 @@
     justify-content: center;
   }
 }
+
+/* 2ランクダウン関連 */
+.penalty-row {
+  margin-top: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #c0392b;
+  cursor: pointer;
+}
+
+.penalty-text {
+  color: #c0392b;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.penalty-badge {
+  background: #c0392b;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+.question-item.penalty-2 {
+  border-left: 4px solid #c0392b;
+  background: rgba(192, 57, 43, 0.05);
+}

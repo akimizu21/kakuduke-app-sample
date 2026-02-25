@@ -59,6 +59,7 @@ class Question(db.Model):
     title = db.Column(db.String(200), nullable=False)
     correct_answer = db.Column(db.String(100), nullable=False)
     choices = db.Column(db.JSON, default=list)  # ["A", "B"] など
+    penalty = db.Column(db.Integer, default=1)  # 不正解時のランクダウン数（1=通常, 2=2ランクダウン）
     answers = db.relationship('Answer', backref='question', lazy=True, cascade='all, delete-orphan')
 
 class Answer(db.Model):
@@ -116,7 +117,8 @@ def get_game(game_id):
             "question_number": q.question_number,
             "title": q.title,
             "correct_answer": q.correct_answer,
-            "choices": q.choices
+            "choices": q.choices,
+            "penalty": q.penalty if hasattr(q, 'penalty') and q.penalty else 1
         } for q in sorted(game.questions, key=lambda x: x.question_number)]
     })
 
@@ -192,7 +194,8 @@ def create_question(game_id):
         question_number=question_count + 1,
         title=data.get('title', ''),
         correct_answer=data.get('correct_answer', 'A'),
-        choices=data.get('choices', ['A', 'B'])
+        choices=data.get('choices', ['A', 'B']),
+        penalty=data.get('penalty', 1)
     )
     db.session.add(question)
     db.session.commit()
@@ -201,7 +204,8 @@ def create_question(game_id):
         "question_number": question.question_number,
         "title": question.title,
         "correct_answer": question.correct_answer,
-        "choices": question.choices
+        "choices": question.choices,
+        "penalty": question.penalty
     }), 201
 
 @app.route('/api/questions/<int:question_id>', methods=['PUT'])
@@ -214,13 +218,16 @@ def update_question(question_id):
         question.correct_answer = data['correct_answer']
     if 'choices' in data:
         question.choices = data['choices']
+    if 'penalty' in data:
+        question.penalty = data['penalty']
     db.session.commit()
     return jsonify({
         "id": question.id,
         "question_number": question.question_number,
         "title": question.title,
         "correct_answer": question.correct_answer,
-        "choices": question.choices
+        "choices": question.choices,
+        "penalty": question.penalty
     })
 
 @app.route('/api/questions/<int:question_id>', methods=['DELETE'])
@@ -286,6 +293,9 @@ def judge_answers(question_id):
     answers = Answer.query.filter_by(question_id=question_id).all()
     results = []
     
+    # 問題のペナルティ値を取得（デフォルト1）
+    penalty = question.penalty if hasattr(question, 'penalty') and question.penalty else 1
+    
     for answer in answers:
         is_correct = answer.answer == question.correct_answer
         previous_is_correct = answer.is_correct  # 前回の判定結果を保存
@@ -300,16 +310,22 @@ def judge_answers(question_id):
         # 1. 今回不正解
         # 2. 前回未判定(None)または前回正解だった場合のみランクダウン
         #    （前回も不正解だった場合は既にランクダウン済みなのでスキップ）
-        if not is_correct and team.rank < 5:
+        if not is_correct:
             if previous_is_correct is None or previous_is_correct == True:
-                team.rank += 1
-                rank_changed = True
+                # ペナルティ分ランクダウン（最大5まで）
+                new_rank = min(team.rank + penalty, 5)
+                if new_rank != team.rank:
+                    team.rank = new_rank
+                    rank_changed = True
         
         # ランクアップの条件（回答修正で正解になった場合）：
         # 前回不正解で今回正解になった場合、ランクを戻す
         if is_correct and previous_is_correct == False and team.rank > 0:
-            team.rank -= 1
-            rank_changed = True
+            # ペナルティ分ランクアップ（最小0まで）
+            new_rank = max(team.rank - penalty, 0)
+            if new_rank != team.rank:
+                team.rank = new_rank
+                rank_changed = True
         
         results.append({
             "team_id": team.id,

@@ -26,6 +26,7 @@ export default function GameSetup() {
     title: '',
     correct_answer: 'A',
     choices: ['A', 'B'],
+    penalty: 1,
   });
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export default function GameSetup() {
     if (!gameId || !newQuestion.title.trim()) return;
     try {
       await createQuestion(parseInt(gameId), newQuestion);
-      setNewQuestion({ title: '', correct_answer: 'A', choices: ['A', 'B'] });
+      setNewQuestion({ title: '', correct_answer: 'A', choices: ['A', 'B'], penalty: 1 });
       loadGame();
     } catch (error) {
       console.error('Failed to add question:', error);
@@ -264,6 +265,16 @@ export default function GameSetup() {
                     ))}
                   </select>
                 </div>
+                <div className="penalty-row">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={newQuestion.penalty === 2}
+                      onChange={(e) => setNewQuestion({ ...newQuestion, penalty: e.target.checked ? 2 : 1 })}
+                    />
+                    <span className="penalty-text">2ランクダウン問題</span>
+                  </label>
+                </div>
                 <button className="btn btn-gold" onClick={handleAddQuestion}>
                   問題を追加
                 </button>
@@ -272,9 +283,12 @@ export default function GameSetup() {
 
             <div className="question-list">
               {game.questions.map((question) => (
-                <div key={question.id} className="question-item">
+                <div key={question.id} className={`question-item ${question.penalty === 2 ? 'penalty-2' : ''}`}>
                   <div className="question-header">
-                    <span className="question-number">第{question.question_number}問</span>
+                    <span className="question-number">
+                      第{question.question_number}問
+                      {question.penalty === 2 && <span className="penalty-badge">2ランクダウン</span>}
+                    </span>
                     <button
                       className="btn btn-red btn-sm"
                       onClick={() => handleDeleteQuestion(question.id)}
@@ -315,6 +329,16 @@ export default function GameSetup() {
                           </option>
                         ))}
                       </select>
+                    </div>
+                    <div className="penalty-row">
+                      <label className="checkbox-label">
+                        <input
+                          type="checkbox"
+                          checked={question.penalty === 2}
+                          onChange={(e) => handleUpdateQuestion(question.id, { penalty: e.target.checked ? 2 : 1 })}
+                        />
+                        <span className="penalty-text">2ランクダウン問題</span>
+                      </label>
                     </div>
                   </div>
                 </div>

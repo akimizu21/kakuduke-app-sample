@@ -191,9 +191,12 @@ export default function QuestionPlay() {
         </div>
 
         {/* 問題表示 */}
-        <div className="question-display gold-frame">
+        <div className={`question-display gold-frame ${currentQuestion.penalty === 2 ? 'penalty-question' : ''}`}>
           <div className="gold-frame-inner question-inner">
-            <h2 className="question-title">第{currentQuestion.question_number}問</h2>
+            <h2 className="question-title">
+              第{currentQuestion.question_number}問
+              {currentQuestion.penalty === 2 && <span className="penalty-badge-large">2ランクダウン</span>}
+            </h2>
             <p className="question-text">{currentQuestion.title || '（問題文未設定）'}</p>
             <div className="question-choices">
               {currentQuestion.choices.map((choice) => (

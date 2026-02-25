@@ -29,6 +29,7 @@ export interface Question {
   title: string;
   correct_answer: string;
   choices: string[];
+  penalty?: number;  // 不正解時のランクダウン数（1=通常, 2=2ランクダウン）
 }
 
 export interface Game {

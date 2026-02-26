@@ -58,7 +58,7 @@ export default function Home() {
       <div className="home-content">
         <h1 className="home-title title-jp">
           <span className="title-main">格付けチェック</span>
-          <span className="title-sub">〜 一流芸能人への道 〜</span>
+          <span className="title-sub">〜 一流社員への道 〜</span>
         </h1>
 
         <div className="create-game-section gold-frame">

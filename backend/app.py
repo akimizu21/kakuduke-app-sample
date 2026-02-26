@@ -47,7 +47,7 @@ class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    rank = db.Column(db.Integer, default=0)  # 0=一流芸能人, 5=映す価値なし
+    rank = db.Column(db.Integer, default=0)  # 0=一流社員, 5=映す価値なし
     row_position = db.Column(db.Integer, default=0)  # 表示行位置
     answers = db.relationship('Answer', backref='team', lazy=True, cascade='all, delete-orphan')
 

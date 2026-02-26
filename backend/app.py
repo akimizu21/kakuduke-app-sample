@@ -25,10 +25,10 @@ db = SQLAlchemy(app)
 
 # 格付けランク定義
 RANKS = [
-    {"id": 0, "name": "一流芸能人", "color": "#C9A227", "bgColor": "#1a1a1a"},
-    {"id": 1, "name": "普通芸能人", "color": "#333333", "bgColor": "#ffffff"},
-    {"id": 2, "name": "二流芸能人", "color": "#ffffff", "bgColor": "#0088cc"},
-    {"id": 3, "name": "三流芸能人", "color": "#ffffff", "bgColor": "#ff6600"},
+    {"id": 0, "name": "一流社員", "color": "#C9A227", "bgColor": "#1a1a1a"},
+    {"id": 1, "name": "普通社員", "color": "#333333", "bgColor": "#ffffff"},
+    {"id": 2, "name": "二流社員", "color": "#ffffff", "bgColor": "#0088cc"},
+    {"id": 3, "name": "三流社員", "color": "#ffffff", "bgColor": "#ff6600"},
     {"id": 4, "name": "そっくりさん", "color": "#333333", "bgColor": "#ffcc00"},
     {"id": 5, "name": "映す価値なし", "color": "#ffffff", "bgColor": "#1a1a1a"},
 ]

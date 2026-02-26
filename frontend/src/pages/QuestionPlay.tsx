@@ -12,10 +12,10 @@ import type { Game, JudgeResult } from '../api';
 import './QuestionPlay.css';
 
 const RANKS_CONFIG = [
-  { id: 0, name: '一流芸能人' },
-  { id: 1, name: '普通芸能人' },
-  { id: 2, name: '二流芸能人' },
-  { id: 3, name: '三流芸能人' },
+  { id: 0, name: '一流社員' },
+  { id: 1, name: '普通社員' },
+  { id: 2, name: '二流社員' },
+  { id: 3, name: '三流社員' },
   { id: 4, name: 'そっくりさん' },
   { id: 5, name: '映す価値なし' },
 ];

@@ -7,10 +7,10 @@ import type { Game } from '../api';
 import './GameBoard.css';
 
 const RANKS_CONFIG = [
-  { id: 0, name: '一流芸能人', color: '#C9A227', bgColor: '#1a1a1a', textColor: '#C9A227' },
-  { id: 1, name: '普通芸能人', color: '#333333', bgColor: '#ffffff', textColor: '#333333' },
-  { id: 2, name: '二流芸能人', color: '#ffffff', bgColor: '#0088cc', textColor: '#ffffff' },
-  { id: 3, name: '三流芸能人', color: '#ffffff', bgColor: '#ff6600', textColor: '#ffffff' },
+  { id: 0, name: '一流社員', color: '#C9A227', bgColor: '#1a1a1a', textColor: '#C9A227' },
+  { id: 1, name: '普通社員', color: '#333333', bgColor: '#ffffff', textColor: '#333333' },
+  { id: 2, name: '二流社員', color: '#ffffff', bgColor: '#0088cc', textColor: '#ffffff' },
+  { id: 3, name: '三流社員', color: '#ffffff', bgColor: '#ff6600', textColor: '#ffffff' },
   { id: 4, name: 'そっくりさん', color: '#333333', bgColor: '#ffcc00', textColor: '#333333' },
   { id: 5, name: '映す価値なし', color: '#ffffff', bgColor: '#1a1a1a', textColor: '#ffffff' },
 ];
@@ -145,9 +145,8 @@ export default function GameBoard() {
           <Home size={20} />
         </button>
         <h1 className="title-jp board-title">{game.name}</h1>
-        <button className="btn btn-primary-action" onClick={() => navigate(`/game/${gameId}/play`)}>
-          <Edit3 size={18} />
-          回答記入
+        <button className="btn btn-icon" onClick={() => navigate(`/game/${gameId}/play`)} title="回答記入">
+          <Edit3 size={20} />
         </button>
       </div>
 

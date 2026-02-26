@@ -2,8 +2,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   padding: 15px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .board-header {
@@ -73,6 +76,7 @@
     rgba(190, 160, 100, 0.4) 100%
   );
   min-height: 400px;
+  overflow: hidden;
 }
 
 .grid-row {
@@ -201,19 +205,19 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
-  padding: 15px 0;
+  padding: 10px 0;
   color: var(--gold-main);
   flex-shrink: 0;
 }
 
 .board-legend p {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* フルスクリーンモード（F11やプレゼンテーション用） */
 @media (min-height: 700px) {
   .board-page {
-    padding: 20px 30px;
+    padding: 15px 20px;
   }
   
   .board-title {
